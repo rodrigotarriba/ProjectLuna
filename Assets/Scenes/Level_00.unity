@@ -470,7 +470,7 @@ PrefabInstance:
     - target: {fileID: 114491592745282986, guid: 76db3eb81fd21ae45bab5204e324ae42,
         type: 3}
       propertyPath: svoInputFileName
-      value: C:/Users/rodrigo.tarriba/Desktop/ProjectLuna/Assets/SVO Recordings/Recording_Jumps.svo
+      value: C:/Users/rodrigo.tarriba/Desktop/ProjectLuna/Assets/Recording_Jumps.svo
       objectReference: {fileID: 0}
     - target: {fileID: 114491592745282986, guid: 76db3eb81fd21ae45bab5204e324ae42,
         type: 3}
@@ -989,7 +989,7 @@ PrefabInstance:
     - target: {fileID: 7930176315466754371, guid: a8c20579481be8e41a553aa0337494c6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7930176315466754428, guid: a8c20579481be8e41a553aa0337494c6,
         type: 3}
