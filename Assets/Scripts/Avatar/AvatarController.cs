@@ -26,6 +26,7 @@ public class MapTransforms
 
 }
 
+
 /// <summary>
 /// Manager for all mapping and transformation of the Controllers + Camera to the Inversed Kinematic elements.
 /// </summary>
@@ -34,12 +35,16 @@ public class AvatarController : MonoBehaviour
     [SerializeField] private MapTransforms head;
     [SerializeField] private MapTransforms leftHand;
     [SerializeField] private MapTransforms rightHand;
-
+    [SerializeField] private float rightFootHeight;
+    //[SerializeField] private Transform rightFootTarget;
+    //[SerializeField] private Transform kinectSphereRightFootTracker;
 
     [SerializeField] private float turnSmoothness;
 
     [SerializeField] Transform ikHead;
     [SerializeField] Vector3 headBodyOffset;//height of character/person
+
+    [SerializeField] KinectManager kinectManager;
 
     private void LateUpdate()
     {
@@ -50,9 +55,22 @@ public class AvatarController : MonoBehaviour
         transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);  // We only want the Y axis rotation, instead of veering sides or tilting the head weirdly. - We add a lerp from the previous forward position to allow a level of smoothness and no immediate jitter.
 
 
+        //if(KinectManager.kinectManager.isSensorReady) rightFootHeight = kinectManager.kinectBodies[0].Joints[LightBuzz.Kinect4Azure.JointType.AnkleRight].Position.Y;
+        //kinectSphereRightFootTracker.position = kinectManager.kinectBodies[0].Joints[LightBuzz.Kinect4Azure.JointType.AnkleRight].Position;
+
+
+        //Debug.Log($"{rightFootHeight}");
+        //string script1 = $"Right foot target is at {rightFootTarget.position}";
+        //rightFootTarget.position = new Vector3(rightFootTarget.position.x, rightFootHeight, rightFootTarget.position.z);
+        //Debug.Log($"{script1} and now its at {rightFootTarget.position}");
+
+
         head.VRMapping();
         leftHand.VRMapping();
         rightHand.VRMapping();
+
+        
+
 
     }
 

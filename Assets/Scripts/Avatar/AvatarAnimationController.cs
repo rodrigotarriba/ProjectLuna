@@ -30,6 +30,7 @@ public class AvatarAnimationController : MonoBehaviour
     
     private void StartWalking(InputAction.CallbackContext obj)
     {
+
         bool isMovingForward = move.action.ReadValue<Vector2>().y > 0;
 
         Debug.Log($"{move.action.ReadValue<Vector2>().y}");

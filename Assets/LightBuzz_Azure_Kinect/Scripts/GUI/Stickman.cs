@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
+
+
 namespace LightBuzz.Kinect4Azure
 {
     public enum CoordinateSpace
@@ -14,6 +16,7 @@ namespace LightBuzz.Kinect4Azure
     {
         [SerializeField] private CoordinateSpace _space = CoordinateSpace.World;
         [SerializeField] private Transform[] _points = new Transform[Enum.GetValues(typeof(JointType)).Length];
+        [SerializeField] private TrackingState[] _trackingState = new TrackingState[Enum.GetValues(typeof(JointType)).Length];
         [SerializeField] private LineRenderer[] _lines = new LineRenderer[Enum.GetValues(typeof(JointType)).Length];
 
         private readonly Tuple<JointType, JointType>[] _bones =
@@ -89,12 +92,24 @@ namespace LightBuzz.Kinect4Azure
         {
             for (int i = 0; i < _points.Length; i++)
             {
-                Joint joint = body.Joints[(JointType) i];
-                Vector3 position = joint.Position;
+                Joint joint = body.Joints[(JointType)i]; //Cast the enum joint type for each of the joints
+                Vector3 position = joint.Position; //retrieve the position of each
+                Vector4 rotation = joint.Orientation; //retrieve the quaternions in a vector4
+                TrackingState stateConfidence = joint.TrackingState; //obtain the level of confidence for this particular class
 
+                //Array of all the positions of the joints
                 _points[i].position = new Vector3(position.x, -position.y, position.z);
+
+                //Add all quaternions to the transforms
+                _points[i].rotation = new UnityEngine.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+
+                //Array of all confidence levels
+                _trackingState[i] = stateConfidence;
+
             }
 
+
+            //Set the positions of the joints only for the line renderer
             for (int i = 0; i < _bones.Length; i++)
             {
                 Joint joint1 = body.Joints[_bones[i].Item1];
@@ -108,6 +123,9 @@ namespace LightBuzz.Kinect4Azure
             }
         }
 
+
+
+
         /// <summary>
         /// Loads the specified body object to the current stickman (Color or Depth position).
         /// </summary>
@@ -117,15 +135,15 @@ namespace LightBuzz.Kinect4Azure
         {
             for (int i = 0; i < _points.Length; i++)
             {
-                _points[i].localPosition = GetPositionOfJointInImage(body.Joints[(JointType) i], image);
+                _points[i].localPosition = GetPositionOfJointInImage(body.Joints[(JointType)i], image);
             }
 
             for (int i = 0; i < _lines.Length; i++)
             {
                 Tuple<JointType, JointType> pair = _bones[i];
 
-                Vector2 p1 = _points[(int) pair.Item1].localPosition;
-                Vector2 p2 = _points[(int) pair.Item2].localPosition;
+                Vector2 p1 = _points[(int)pair.Item1].localPosition;
+                Vector2 p2 = _points[(int)pair.Item2].localPosition;
 
                 _lines[i].enabled = true;
                 _lines[i].SetPosition(0, p1);

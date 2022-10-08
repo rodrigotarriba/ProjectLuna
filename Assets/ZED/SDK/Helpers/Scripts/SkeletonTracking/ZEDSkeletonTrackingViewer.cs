@@ -199,7 +199,7 @@ public class ZEDSkeletonTrackingViewer : MonoBehaviour
         UpdateViewCameraPosition();
     }
 
-
+    //rtcNote use this for creating  my handler
 	/// <summary>
 	/// Function to update avatar control with data from ZED SDK.
 	/// </summary>

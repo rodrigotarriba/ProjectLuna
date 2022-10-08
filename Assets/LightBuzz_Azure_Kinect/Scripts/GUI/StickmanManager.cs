@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace LightBuzz.Kinect4Azure
 {
     public class StickmanManager : MonoBehaviour
@@ -8,6 +9,10 @@ namespace LightBuzz.Kinect4Azure
         [SerializeField] private GameObject _stickmanPrefab;
         [SerializeField] private CoordinateSpace _space = CoordinateSpace.World;
         [SerializeField] private UniformImage _image;
+
+
+        //rtc
+        [SerializeField] public List<Body> kinectBodies;
 
         private readonly List<Stickman> _stickmen = new List<Stickman>();
 
@@ -37,6 +42,7 @@ namespace LightBuzz.Kinect4Azure
         /// <param name="bodies">A list of bodies.</param>
         public void Load(List<Body> bodies)
         {
+            
             if (bodies == null) return;
 
             if (_stickmen.Count != bodies.Count)
@@ -48,8 +54,16 @@ namespace LightBuzz.Kinect4Azure
 
                 _stickmen.Clear();
 
+                //rtc
+                kinectBodies = new List<Body>();
+
+                //Instantiate a stickman prefab and add its Stickman component to "stickmen"
                 foreach (Body body in bodies)
                 {
+                    kinectBodies.Add(body);
+
+                    
+                    //rtc skipping stickman instantiation
                     GameObject go = Instantiate(_stickmanPrefab, transform);
                     Stickman stickman = go.GetComponent<Stickman>();
                     stickman.Space = _space;
@@ -58,6 +72,7 @@ namespace LightBuzz.Kinect4Azure
                 }
             }
 
+            //Assign and run each body to its appropiate stickmen
             for (int i = 0; i < bodies.Count; i++)
             {
                 if (_space == CoordinateSpace.World)

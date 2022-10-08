@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3960877588335512573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3960877588335512575}
+  - component: {fileID: 3960877588335512572}
+  m_Layer: 0
+  m_Name: Demo_Kinect4Azure_BodyTracking
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3960877588335512575
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3960877588335512573}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3960877588335512572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3960877588335512573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9173e3afceb047f479301c8a690777ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _configuration:
+    _deviceIndex: 0
+    _framePerSecond: 1
+    _depthMode: 3
+    _colorFormat: 3
+    _colorResolution: 2
+    _syncedImagesOnly: 1
+    _wiredSyncMode: 0
+    _enableIMU: 0
+    _enableColorPointCloud: 0
+    _enableDepthPointCloud: 0
+    _enableFloorTracking: 0
+    _enableBodyTracking: 1
+    _smoothing: 0.1
+    _processingMode: 4
+    _sensorOrientation: 0
+    _gpuDeviceId: 0
+    _modelPath: dnn_model_2_0_lite_op11.onnx
+    _timeout: 0
+  _stickmanManager: {fileID: 0}
+  _speed: 0.5

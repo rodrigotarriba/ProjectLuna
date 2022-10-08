@@ -37,6 +37,8 @@ public class LowerBodyAnimation : MonoBehaviour
     [SerializeField] private Transform cubeTransform2;
 
 
+
+
     private void OnAnimatorIK(int layerIndex)
     {
         Vector3 leftFootPosition = animator.GetIKPosition(AvatarIKGoal.LeftFoot);
