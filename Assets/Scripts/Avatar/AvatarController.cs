@@ -35,6 +35,7 @@ public class AvatarController : MonoBehaviour
     [SerializeField] private MapTransforms leftHand;
     [SerializeField] private MapTransforms rightHand;
 
+
     [SerializeField] private float turnSmoothness;
 
     [SerializeField] Transform ikHead;
@@ -45,7 +46,8 @@ public class AvatarController : MonoBehaviour
         //Made in late update to avoid jigger
 
         transform.position = ikHead.position + headBodyOffset;
-        transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);  // We only want the Y axis rotation, instead of veering sides or tilting the head weirdly. - We add a lerp from the previous forward position to allow a level of smoothness and no immediate jitter.
+        //transform.forward = Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized;
+        transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);  // We only want the Y axis rotation, instead of veering sides or tilting the head weirdly. - We add a lerp from the previous forward position to allow a level of smoothness and no immediate jitter.
 
 
         head.VRMapping();
