@@ -44,7 +44,7 @@ public class AvatarController : MonoBehaviour
     [SerializeField] Transform ikHead;
     [SerializeField] Vector3 headBodyOffset;//height of character/person
 
-    [SerializeField] KinectManager kinectManager;
+    //[SerializeField] KinectManager kinectManager;
 
     private void LateUpdate()
     {
