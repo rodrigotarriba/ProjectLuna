@@ -45,10 +45,6 @@ public class LowerBodyAnimation : MonoBehaviour
         Vector3 leftFootPosition = animator.GetIKPosition(AvatarIKGoal.LeftFoot);
         Vector3 rightFootPosition = animator.GetIKPosition(AvatarIKGoal.RightFoot);
 
-        sphereTransform.position = leftFootPosition;
-        sphereTransform2.position = rightFootPosition;
-
-
         //sphereTransform.position = rightFootPosition + footOffset;
         int layerMasks = 1 << 7;
 
@@ -56,34 +52,13 @@ public class LowerBodyAnimation : MonoBehaviour
         RaycastHit hitLeftFoot;
         RaycastHit hitRightFoot;
 
-        
-
         //Magnitude of the raycast before computing
         float raycastMagnitude =  Vector3.Distance(raycastThresholdAboveGround, raycastThresholdBelowGround);
         //Debug.Log($"{raycastMagnitude}");
 
-        Ray leftRay = new Ray(leftFootPosition + raycastThresholdAboveGround, Vector3.down);
-        Ray rightRay = new Ray(rightFootPosition + raycastThresholdAboveGround, Vector3.down);
-
-        
-
         //Hook feet to the ground surface if close to the surface, this is a ray going upwards to avoid the feet from colliding with the surface.
-        //bool isLeftFootDown = Physics.Raycast(leftFootPosition + raycastThresholdBelowGround, Vector3.down, out hitLeftFoot, raycastMagnitude, layerMasks);
-        //bool isRightFootDown = Physics.Raycast(rightFootPosition + raycastThresholdBelowGround, Vector3.down, out hitRightFoot, raycastMagnitude, layerMasks);
-        bool isLeftFootDown = Physics.Raycast(leftRay, out hitLeftFoot, float.MaxValue, layerMasks);
-        bool isRightFootDown = Physics.Raycast(rightRay, out hitRightFoot, float.MaxValue, layerMasks);
-
-
-
-
-
-
-        cubeTransform.position = hitRightFoot.point;
-        cubeTransform2.position = hitLeftFoot.point;
-        //sphereTransform.position = rightFootPosition + raycastThresholdAboveGround;
-        //sphereTransform2.position = leftFootPosition + raycastThresholdAboveGround;
-        //cubeTransform.position = rightFootPosition + raycastThresholdBelowGround;
-        //cubeTransform2.position = leftFootPosition + raycastThresholdBelowGround;
+        bool isLeftFootDown = Physics.Raycast(leftFootPosition + raycastThresholdBelowGround, Vector3.up, out hitLeftFoot, raycastMagnitude, layerMasks);
+        bool isRightFootDown = Physics.Raycast(rightFootPosition + raycastThresholdBelowGround, Vector3.up, out hitRightFoot, raycastMagnitude, layerMasks);
 
         CalculateLeftFoot(hitLeftFoot, isLeftFootDown);
         CalculateRightFoot(hitRightFoot, isRightFootDown);
@@ -108,7 +83,6 @@ public class LowerBodyAnimation : MonoBehaviour
         }
 
         else
-
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 0);
         }
@@ -131,13 +105,10 @@ public class LowerBodyAnimation : MonoBehaviour
         }
 
         else
-
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 0);
         }
     }
-
-
 
 
 }
