@@ -224,6 +224,7 @@ public class SkeletonHandler : ScriptableObject
     /// <param name="h">The height.</param>
     public void Create(GameObject h)
     {
+
         humanoid = (GameObject)Instantiate(h, Vector3.zero, Quaternion.identity);
 
         var invisiblelayer = LayerMask.NameToLayer("tagInvisibleToZED");
