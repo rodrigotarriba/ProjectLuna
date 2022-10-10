@@ -11,8 +11,15 @@ public class KinectReceiver : MonoBehaviour
     Vector3[] jointsPos;
     Vector3[] jointsRot;
 
-    [SerializeField] Transform cubesParent;
     [SerializeField] Transform hipReference;
+
+
+    [SerializeField] Transform kinectLeftAnkle;
+    [SerializeField] Transform kinectRightAnkle;
+    [SerializeField] Transform kinectPelvis;
+
+
+
     private Vector3 referenceJoint;
 
     // Start is called before the first frame update
@@ -21,7 +28,6 @@ public class KinectReceiver : MonoBehaviour
         //Initializing OSC handler
 
         oscManager.SetAllMessageHandler(OnReceiveJoints);
-        //oscManager.SetAddressHandler("/Joints", OnReceiveJoints);
         //oscManager.SetAddressHandler("/Joints", OnReceiveJoints);
 
         //Establish two lists for rotation and position of each joint
@@ -37,23 +43,28 @@ public class KinectReceiver : MonoBehaviour
         //Get all the reference joints instanced in world coordinates
         if (jointsPos[0] == null) return;
 
-        for (var i = 0; i < jointsPos.Length; i++)
-        {
-            cubes[i].SetPositionAndRotation(jointsPos[i], Quaternion.Euler(jointsRot[i]));
 
-            cubes[i].position += posOffset;
 
-        }
+        AlignTransforms(kinectPelvis, jointsPos[0], jointsRot[0]);
+        AlignTransforms(kinectLeftAnkle, jointsPos[1], jointsRot[1]);
+        AlignTransforms(kinectRightAnkle, jointsPos[2], jointsRot[2]);
 
         //align reference joints with user
         //var toMove = hipReference.position - jointsPos[0];
         //cubesParent.position += toMove;
         //cubesParent.forward = hipReference.forward;
 
+    }
 
 
+    public void AlignTransforms(Transform jointGameObject, Vector3 position, Vector3 rotation)
+    {
+        jointGameObject.transform.SetPositionAndRotation(position, Quaternion.Euler(rotation));
 
     }
+
+
+
 
     public void OnReceiveJoints(OscMessage message)
     {

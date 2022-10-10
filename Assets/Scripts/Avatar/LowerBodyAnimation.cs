@@ -40,30 +40,30 @@ public class LowerBodyAnimation : MonoBehaviour
 
 
 
-    private void OnAnimatorIK(int layerIndex)
-    {
-        Vector3 leftFootPosition = animator.GetIKPosition(AvatarIKGoal.LeftFoot);
-        Vector3 rightFootPosition = animator.GetIKPosition(AvatarIKGoal.RightFoot);
+    //private void OnAnimatorIK(int layerIndex)
+    //{
+    //    Vector3 leftFootPosition = animator.GetIKPosition(AvatarIKGoal.LeftFoot);
+    //    Vector3 rightFootPosition = animator.GetIKPosition(AvatarIKGoal.RightFoot);
 
-        //sphereTransform.position = rightFootPosition + footOffset;
-        int layerMasks = 1 << 7;
+    //    //sphereTransform.position = rightFootPosition + footOffset;
+    //    int layerMasks = 1 << 7;
 
-        //Determnine if the raycast is touching the floor
-        RaycastHit hitLeftFoot;
-        RaycastHit hitRightFoot;
+    //    //Determnine if the raycast is touching the floor
+    //    RaycastHit hitLeftFoot;
+    //    RaycastHit hitRightFoot;
 
-        //Magnitude of the raycast before computing
-        float raycastMagnitude =  Vector3.Distance(raycastThresholdAboveGround, raycastThresholdBelowGround);
-        //Debug.Log($"{raycastMagnitude}");
+    //    //Magnitude of the raycast before computing
+    //    float raycastMagnitude =  Vector3.Distance(raycastThresholdAboveGround, raycastThresholdBelowGround);
+    //    //Debug.Log($"{raycastMagnitude}");
 
-        //Hook feet to the ground surface if close to the surface, this is a ray going upwards to avoid the feet from colliding with the surface.
-        bool isLeftFootDown = Physics.Raycast(leftFootPosition + raycastThresholdBelowGround, Vector3.up, out hitLeftFoot, raycastMagnitude, layerMasks);
-        bool isRightFootDown = Physics.Raycast(rightFootPosition + raycastThresholdBelowGround, Vector3.up, out hitRightFoot, raycastMagnitude, layerMasks);
+    //    //Hook feet to the ground surface if close to the surface, this is a ray going upwards to avoid the feet from colliding with the surface.
+    //    bool isLeftFootDown = Physics.Raycast(leftFootPosition + raycastThresholdBelowGround, Vector3.up, out hitLeftFoot, raycastMagnitude, layerMasks);
+    //    bool isRightFootDown = Physics.Raycast(rightFootPosition + raycastThresholdBelowGround, Vector3.up, out hitRightFoot, raycastMagnitude, layerMasks);
 
-        CalculateLeftFoot(hitLeftFoot, isLeftFootDown);
-        CalculateRightFoot(hitRightFoot, isRightFootDown);
+    //    CalculateLeftFoot(hitLeftFoot, isLeftFootDown);
+    //    CalculateRightFoot(hitRightFoot, isRightFootDown);
 
-    }
+    //}
 
 
 
