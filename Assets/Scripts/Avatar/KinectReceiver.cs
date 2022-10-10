@@ -46,9 +46,9 @@ public class KinectReceiver : MonoBehaviour
         }
 
         //align reference joints with user
-        var toMove = hipReference.position - jointsPos[0];
-        cubesParent.position += toMove;
-        cubesParent.forward = hipReference.forward;
+        //var toMove = hipReference.position - jointsPos[0];
+        //cubesParent.position += toMove;
+        //cubesParent.forward = hipReference.forward;
 
 
 
