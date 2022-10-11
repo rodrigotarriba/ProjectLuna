@@ -8,8 +8,8 @@ public class AvatarController : MonoBehaviour
     [SerializeField] private VRMapping head;
     [SerializeField] private VRMapping leftHand;
     [SerializeField] private VRMapping rightHand;
-    [SerializeField] private KinectMapping leftFoot;
-    [SerializeField] private KinectMapping rightFoot;
+    [SerializeField] private VRMapping leftFoot;
+    [SerializeField] private VRMapping rightFoot;
 
     [SerializeField] private float turnSmoothness;
 
@@ -42,8 +42,8 @@ public class AvatarController : MonoBehaviour
 
 
         head.Mapping();
-        leftHand.Mapping();
-        rightHand.Mapping();
+        //leftHand.Mapping();
+        //rightHand.Mapping();
 
         leftFoot.Mapping();
         rightFoot.Mapping();
