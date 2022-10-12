@@ -22,6 +22,13 @@ public class AvatarController : MonoBehaviour
 
     [SerializeField] Transform sphere;
 
+    Transform ball1;
+    Transform ball2;
+    Transform ball3;
+    Transform ball4;
+    Transform ball5;
+    Transform ball6;
+    Transform ball7;
 
     /// <summary>
     /// Raycast to determine how far BELOW ground the foot kinematics must attempt to stick to the ground.
@@ -44,17 +51,28 @@ public class AvatarController : MonoBehaviour
     /// </summary>
     private AvatarController avatarController;
 
-    [SerializeField] 
+
 
     private void Awake()
     {
         solidSurfaceLayer = 1 << LayerMask.NameToLayer("SolidSurface"); //layer for collisions with solid surfaces
         avatarController = GetComponent<AvatarController>();
 
-
     }
 
-    private void Update()
+
+    private void Start()
+    {
+        ball1 = Instantiate(sphere);
+        ball2 = Instantiate(sphere);
+        ball3 = Instantiate(sphere);
+        ball4 = Instantiate(sphere);
+        ball5 = Instantiate(sphere);
+        ball6 = Instantiate(sphere);
+        ball7 = Instantiate(sphere);
+    }
+
+    public void Update()
     {
         //Made in late update to avoid jigger
 
@@ -62,44 +80,36 @@ public class AvatarController : MonoBehaviour
         transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);  // We only want the Y axis rotation, instead of veering sides or tilting the head weirdly. - We add a lerp from the previous forward position to allow a level of smoothness and no immediate jitter.
 
         headVR.Mapping(); 
-        leftFootVR.Mapping();
-        rightFootVR.Mapping();
+        var leftFoot = leftFootVR.Mapping();
+        var rightFoot = rightFootVR.Mapping();
 
-        //Pending implementation of hand tracing through Kinect
-        //leftHand.Mapping();
-        //rightHand.Mapping();
+        GroundHitDetection(leftFoot);
+        GroundHitDetection(rightFoot);
 
-        RaycastHit leftFootHit;
-        RaycastHit rightFootHit;
-
-        if (GroundHitDetection(leftFootVR, out leftFootHit))
-        { 
-            leftFootHit.collider.GetComponent<MeshRenderer>().material.color = Color.red;
-        }
-
-        if (GroundHitDetection(rightFootVR, out rightFootHit))
-        {
-            sphere.position = rightFootHit.point;
-            rightFootHit.collider.GetComponent<MeshRenderer>().material.color = Color.red;
-        }
 
     }
 
 
-
-    public bool GroundHitDetection(VRFootMapper footMapper, out RaycastHit footHit)
+    /// <summary>
+    /// Detect ground, hoverpads and/or clash with death zone (falling)
+    /// </summary>
+    /// <param name="foot"></param>
+    public void GroundHitDetection(Transform foot)
     {
+        RaycastHit footHit;
+
         //Desired thresehold for sticking foot into ground/solid
         float raycastMagnitude = Vector3.Distance(raycastThresholdAboveGround, raycastThresholdBelowGround);
 
-        bool isFootDown = Physics.Raycast(footMapper.ikTarget.position - anklesHeight + raycastThresholdBelowGround, Vector3.up, out footHit, raycastMagnitude, solidSurfaceLayer);
+        bool isFootDown = Physics.Raycast(foot.position - anklesHeight + raycastThresholdBelowGround, Vector3.up, out footHit, raycastMagnitude, solidSurfaceLayer);
 
         if (isFootDown)
         {
-            footMapper.GroundRemapping(footHit.point);
+            if (foot.name == "LeftFootTarget") PadsManager.padsManager.onPadHit(footHit.collider, "Left");
+            if (foot.name == "RightFootTarget") PadsManager.padsManager.onPadHit(footHit.collider, "Right");
+
         }
 
-        return isFootDown;
     }
 
 }
@@ -122,12 +132,10 @@ public class VRHeadMapper : IMapper
 
     public Transform Mapping()
     {
-        
         //Map position and rotation of the given vectors
         ikTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
         ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
         return ikTarget;
-
     }
 
 }
@@ -151,17 +159,6 @@ public class VRFootMapper : IMapper
         ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
         return ikTarget;
     }
-
-    public void GroundRemapping(Vector3 groundHit)
-    {
-        float yRotation = ikTarget.localRotation.eulerAngles.y;
-        ikTarget.rotation = footVRRotationReference.rotation * Quaternion.Euler(trackingRotationOffset);
-        ikTarget.localRotation = Quaternion.Euler(ikTarget.localRotation.eulerAngles.x, yRotation + 10f, ikTarget.localRotation.eulerAngles.z);
-
-    }
-
-
-
 
 }
 
