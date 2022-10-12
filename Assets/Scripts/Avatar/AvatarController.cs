@@ -36,23 +36,9 @@ public class AvatarController : MonoBehaviour
         //Made in late update to avoid jigger
 
         transform.position = ikHead.position + headBodyOffset;
-        //transform.forward = Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized;
         transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);  // We only want the Y axis rotation, instead of veering sides or tilting the head weirdly. - We add a lerp from the previous forward position to allow a level of smoothness and no immediate jitter.
 
-
-        //Only if using kinect locally
-        //if(KinectManager.kinectManager.isSensorReady) rightFootHeight = kinectManager.kinectBodies[0].Joints[LightBuzz.Kinect4Azure.JointType.AnkleRight].Position.Y;
-        //kinectSphereRightFootTracker.position = kinectManager.kinectBodies[0].Joints[LightBuzz.Kinect4Azure.JointType.AnkleRight].Position;
-        //Debug.Log($"{rightFootHeight}");
-        //string script1 = $"Right foot target is at {rightFootTarget.position}";
-        //rightFootTarget.position = new Vector3(rightFootTarget.position.x, rightFootHeight, rightFootTarget.position.z);
-        //Debug.Log($"{script1} and now its at {rightFootTarget.position}");
-
-
         head.Mapping();
-        //leftHand.Mapping();
-        //rightHand.Mapping();
-
         leftFoot.Mapping();
         rightFoot.Mapping();
 
@@ -84,8 +70,6 @@ public class VRMapping : IMapper
     {
         //Map position and rotation of the given vectors
         ikTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
-        //ikTarget.rotation = vrTarget.rotation;
-        //ikTarget.rotation = Quaternion.Euler(vrTarget.rotation.eulerAngles + trackingRotationOffset);
         ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
     }
 

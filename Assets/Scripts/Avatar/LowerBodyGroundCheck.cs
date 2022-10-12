@@ -56,9 +56,7 @@ public class LowerBodyGroundCheck : MonoBehaviour
     private void Awake()
     {
         solidSurfaceLayer = 1 << LayerMask.NameToLayer("SolidSurface");
-        avatarController = GetComponent<AvatarController>();
-        audioSource = GetComponent<AudioSource>();
-        lineRenderer = GetComponent<LineRenderer>();
+
     }
 
     /// <summary>
@@ -70,11 +68,17 @@ public class LowerBodyGroundCheck : MonoBehaviour
     //    FeetSolidCheck();
     //}
 
-    //private void LateUpdate()
-    //{
-    //    FeetPosRaycast();
-    //}
+    public void Start()
+    {
+        avatarController = GetComponent<AvatarController>();
+        audioSource = GetComponent<AudioSource>();
+        lineRenderer = GetComponent<LineRenderer>();
+    }
 
+    private void LateUpdate()
+    {
+        FeetPosRaycast();
+    }
 
     public void FeetPosRaycast()
     {
