@@ -26,6 +26,11 @@ public class PadsManager : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+
+    }
+
     public void onPadHit(Collider padCollider, string footName)
     {
         if (footName == "Left") padCollider.GetComponent<HoverPadBase>().leftFootTouching = true;

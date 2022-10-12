@@ -1,4 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+
 
 /// <summary>
 /// Manager for all mapping and transformation of the Controllers + Camera to the Inversed Kinematic elements.
@@ -17,8 +21,6 @@ public class AvatarController : MonoBehaviour
     [SerializeField] Vector3 headBodyOffset;//height of character/person
     [SerializeField] Vector3 anklesHeight;//height of character/person
 
-    private Transform leftFootIK;
-    private Transform rightFootIK;
 
     [SerializeField] Transform sphere;
 
@@ -46,17 +48,15 @@ public class AvatarController : MonoBehaviour
     /// </summary>
     private int solidSurfaceLayer;
 
-    /// <summary>
-    /// Reference to avatar controller script for this player.
-    /// </summary>
-    private AvatarController avatarController;
-
+    [SerializeField] Rigidbody xrOriginRigidBody;
+    [SerializeField] Transform xrOriginTransform;
+    [SerializeField] bool useGravity;
 
 
     private void Awake()
     {
+        //Assign layer for pads and ground
         solidSurfaceLayer = 1 << LayerMask.NameToLayer("SolidSurface"); //layer for collisions with solid surfaces
-        avatarController = GetComponent<AvatarController>();
 
     }
 
@@ -72,47 +72,81 @@ public class AvatarController : MonoBehaviour
         ball7 = Instantiate(sphere);
     }
 
-    public void Update()
+    public void LateUpdate()
     {
-        //Made in late update to avoid jigger
-
+        //Made in late update to avoid jiggering from fighting IK transformations
         transform.position = ikHead.position + headBodyOffset;
         transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);  // We only want the Y axis rotation, instead of veering sides or tilting the head weirdly. - We add a lerp from the previous forward position to allow a level of smoothness and no immediate jitter.
 
+        //Map HMD and feet
         headVR.Mapping(); 
         var leftFoot = leftFootVR.Mapping();
         var rightFoot = rightFootVR.Mapping();
 
-        GroundHitDetection(leftFoot);
-        GroundHitDetection(rightFoot);
 
+        if(!GroundHitDetection(leftFoot) && !GroundHitDetection(rightFoot) && useGravity)
+        {
+            xrOriginRigidBody.isKinematic = false;
+            xrOriginRigidBody.useGravity = true;
+        }
 
     }
+
 
 
     /// <summary>
     /// Detect ground, hoverpads and/or clash with death zone (falling)
     /// </summary>
     /// <param name="foot"></param>
-    public void GroundHitDetection(Transform foot)
+    public bool GroundHitDetection(Transform foot)
     {
         RaycastHit footHit;
 
-        //Desired thresehold for sticking foot into ground/solid
+        //Desired detection thresehold for sticking foot into ground/solid
         float raycastMagnitude = Vector3.Distance(raycastThresholdAboveGround, raycastThresholdBelowGround);
 
         bool isFootDown = Physics.Raycast(foot.position - anklesHeight + raycastThresholdBelowGround, Vector3.up, out footHit, raycastMagnitude, solidSurfaceLayer);
 
         if (isFootDown)
         {
+            xrOriginRigidBody.isKinematic = true;
+            xrOriginRigidBody.useGravity = false;
+
             if (foot.name == "LeftFootTarget") PadsManager.padsManager.onPadHit(footHit.collider, "Left");
             if (foot.name == "RightFootTarget") PadsManager.padsManager.onPadHit(footHit.collider, "Right");
 
+
+            //Adjust player height as standing in the platform they just collided with
+            //xrOriginTransform.Translate(0f, footHit.point.y - xrOriginTransform.position.y + anklesHeight.y, 0f);
+
         }
+
+        return isFootDown;
 
     }
 
+
+
+    
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /// <summary>
