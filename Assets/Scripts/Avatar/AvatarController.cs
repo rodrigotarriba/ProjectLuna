@@ -5,16 +5,18 @@ using UnityEngine;
 /// </summary>
 public class AvatarController : MonoBehaviour
 {
-    [SerializeField] private VRMapping head;
-    [SerializeField] private VRMapping leftHand;
-    [SerializeField] private VRMapping rightHand;
-    [SerializeField] private VRMapping leftFoot;
-    [SerializeField] private VRMapping rightFoot;
+    [SerializeField] public VRMapping head;
+    [SerializeField] public VRMapping leftHand;
+    [SerializeField] public VRMapping rightHand;
+    [SerializeField] public VRMapping leftFoot;
+    [SerializeField] public VRMapping rightFoot;
 
     [SerializeField] private float turnSmoothness;
 
     [SerializeField] Transform ikHead;
     [SerializeField] Vector3 headBodyOffset;//height of character/person
+
+    [SerializeField] private LowerBodyGroundCheck lowerBodyGroundCheck;
 
     //Only if using kinect locally
     //[SerializeField] private float rightFootHeight;
@@ -23,7 +25,13 @@ public class AvatarController : MonoBehaviour
     //[SerializeField] KinectManager kinectManager;
 
 
-    private void LateUpdate()
+    private void Awake()
+    {
+        lowerBodyGroundCheck = GetComponent<LowerBodyGroundCheck>();
+    }
+
+
+    private void Update()
     {
         //Made in late update to avoid jigger
 
@@ -51,7 +59,6 @@ public class AvatarController : MonoBehaviour
 
 
 
-
     }
 }
 
@@ -71,10 +78,14 @@ public class VRMapping : IMapper
     public Vector3 trackingPositionOffset;
     public Vector3 trackingRotationOffset;
 
+
+
     public void Mapping()
     {
         //Map position and rotation of the given vectors
         ikTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
+        //ikTarget.rotation = vrTarget.rotation;
+        //ikTarget.rotation = Quaternion.Euler(vrTarget.rotation.eulerAngles + trackingRotationOffset);
         ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
     }
 
