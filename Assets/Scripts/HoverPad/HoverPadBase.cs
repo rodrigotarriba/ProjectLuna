@@ -8,7 +8,7 @@ public class HoverPadBase : MonoBehaviour
 
     //Defines the current state of the pad, whether it has been touched or not.
     [SerializeField] public HoverState hoverState;
-    private HoverState previousState;
+    protected HoverState previousState;
 
     //Particle animation to signal pad state
     private ParticleSystem[] hoverParticleRing;
@@ -23,6 +23,8 @@ public class HoverPadBase : MonoBehaviour
 
     }
 
+
+
     public void LateUpdate()
     {
         CheckHoverState();
@@ -34,13 +36,12 @@ public class HoverPadBase : MonoBehaviour
     /// <summary>
     /// Check if the current hover remains in the same state, which determines animations and other factors later on.
     /// </summary>
-    public void CheckHoverState()
+    public virtual void CheckHoverState()
     {
         if (!leftFootTouching && !rightFootTouching)
         {
             foreach (var particle in hoverParticleRing)
             {
-                Debug.Log("should stop playing now");
                 if (particle.isPlaying) particle.Stop();
                 previousState = HoverState.noFeetDown;
                 break;
@@ -61,7 +62,6 @@ public class HoverPadBase : MonoBehaviour
 
             foreach (var particle in hoverParticleRing)
             {
-                Debug.Log("should be playing now");
                 if (!particle.isPlaying) particle.Play();
                 previousState = HoverState.oneFootDown;
             }
