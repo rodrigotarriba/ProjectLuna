@@ -5,14 +5,14 @@ using UnityEngine;
 public class HoverPadBase : MonoBehaviour
 {
 
-
-    //Defines the current state of the pad, whether it has been touched or not.
+    //Defines the current state of this pad, whether it has been touched or not.
     [SerializeField] public HoverState hoverState;
     private HoverState previousState;
 
     //Particle animation to signal pad state
     private ParticleSystem[] hoverParticleRing;
 
+    //which foot!
     public bool leftFootTouching = false;
     public bool rightFootTouching = false;
 
@@ -36,17 +36,18 @@ public class HoverPadBase : MonoBehaviour
     /// </summary>
     public void CheckHoverState()
     {
+        //Are none of the foot touching?
         if (!leftFootTouching && !rightFootTouching)
         {
             foreach (var particle in hoverParticleRing)
             {
-                Debug.Log("should stop playing now");
                 if (particle.isPlaying) particle.Stop();
                 previousState = HoverState.noFeetDown;
                 break;
             }
         }
 
+        //Is the left and the right touching?
         if (leftFootTouching && rightFootTouching)
         {
             foreach (var particle in hoverParticleRing)
@@ -56,6 +57,7 @@ public class HoverPadBase : MonoBehaviour
             }
         }
 
+        //Is either foot touching?
         if (leftFootTouching || rightFootTouching)
         {
 
