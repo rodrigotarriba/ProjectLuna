@@ -22,7 +22,8 @@ public class HoverPad_TwoSteps : HoverPadBase
 
         if(previousState == HoverState.oneFootDown || previousState == HoverState.twoFeetDown)
         {
-            xrRig.transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+            //xrRig.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            xrRig.transform.Translate(new Vector3(0f, (transform.position - xrRig.transform.position).y, 0f));
         }
     }
 }

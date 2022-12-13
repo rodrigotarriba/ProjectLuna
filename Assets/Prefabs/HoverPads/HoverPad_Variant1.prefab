@@ -65,8 +65,13 @@ PrefabInstance:
     - target: {fileID: 5476741882529375579, guid: 47c97b3b61d017a4f9069f000e1cdc68,
         type: 3}
       propertyPath: m_Name
-      value: HoverPad_Basic (3)
+      value: HoverPad_Variant1
       objectReference: {fileID: 0}
+    - target: {fileID: 6222439757926008079, guid: 47c97b3b61d017a4f9069f000e1cdc68,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bf3de120905e4cc4fa1059cb79d8cbc5, type: 2}
     m_RemovedComponents:
     - {fileID: 8477146709023570593, guid: 47c97b3b61d017a4f9069f000e1cdc68, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 47c97b3b61d017a4f9069f000e1cdc68, type: 3}
@@ -102,3 +107,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd724dcdc7cbe8446864fc619758758f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverState: 0
+  leftFootTouching: 0
+  rightFootTouching: 0
+  Pos1: {x: 0, y: 0, z: 0}
+  Pos2: {x: 0, y: 0, z: 0}
+  traslationSpeed: 0
+  xrRig: {fileID: 0}
